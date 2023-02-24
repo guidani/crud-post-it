@@ -1,38 +1,24 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
+import { useSWRConfig } from "swr";
+
+async function sendRequest(url: string, { ...arg }) {
+  return await axios.post(url, JSON.stringify(arg));
+}
 
 export default function AddPost() {
   const [title, setTitle] = useState<string>("");
   const [isDisabled, setIsDisabled] = useState(false);
-  let toastPostId: string;
 
   // criar um post
-  const { mutate, isError, data } = useMutation(
-    async (title: string) => await axios.post("/api/posts/addPost", { title }),
-    {
-      async onSuccess(data, variables, context) {
-        toast.success("Post criado com sucesso... :D", { id: toastPostId });
-        setIsDisabled(false);
-        setTitle("");
-      },
-      async onError(error, variables, context) {
-        setIsDisabled(false);
-        if (error instanceof AxiosError) {
-          toast.error(error?.response?.data.message, { id: toastPostId });
-        }
-      },
-    }
-  );
+  const { mutate } = useSWRConfig();
 
-  const submitPost = (e: React.FormEvent) => {
+  const submitPost = async (e: React.FormEvent) => {
     e.preventDefault();
-    toastPostId = toast.loading("Criando post", { id: toastPostId });
-    setIsDisabled(true);
-    mutate(title);
+    await axios.post("/api/posts/addPost", { title });
+    mutate("/api/posts/getPosts");
   };
 
   return (

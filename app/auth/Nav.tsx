@@ -6,7 +6,6 @@ import Login from "./Login";
 
 export default async function Nav() {
   const session = await getServerSession(authOptions);
-  
 
   return (
     <nav className="flex justify-between items-center py-8">

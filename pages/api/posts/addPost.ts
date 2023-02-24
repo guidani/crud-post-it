@@ -27,28 +27,28 @@ export default async function handler(
         .status(403)
         .json({ message: "O texto precisa possuir menos que 300 caracteres." });
     }
-    if(!title.length) {
-      return res.status(403).json({message: "Não deixe este item vazio."})
+    if (!title.length) {
+      return res.status(403).json({ message: "Não deixe este item vazio." });
     }
 
     // Pegar usuário
     const prismaUser = await client.user.findUnique({
       where: {
-        email: session.user?.email!
-      }
-    })
+        email: session.user?.email!,
+      },
+    });
 
     // criar o post
     try {
       const result = await client.post.create({
         data: {
           title,
-          userId: prismaUser?.id!
-        }
-      })
-      return res.status(200).json({message: JSON.stringify(result)})
+          userId: prismaUser?.id!,
+        },
+      });
+      return res.status(200).json({ message: JSON.stringify(result) });
     } catch (error) {
-      res.status(403).json({message: "Algo deu errado!"})
+      res.status(403).json({ message: "Algo deu errado!" });
     }
   }
 }

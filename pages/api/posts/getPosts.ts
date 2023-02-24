@@ -8,7 +8,15 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     // Pegar todos os posts
-    const data = await client.user.findMany({});
+    const data = await client.post.findMany({
+      include: {
+        user: true,
+        Comment: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
     // criar o post
     try {
