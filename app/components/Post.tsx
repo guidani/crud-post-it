@@ -2,14 +2,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {
+export interface PostProps {
   avatar?: string;
   name?: string;
   postTitle?: string;
   id?: string | number;
+  comments: Comment[];
 }
 
-const Post = ({ avatar, name, postTitle, id }: Props) => {
+const Post = ({ avatar, name, postTitle, id, comments }: PostProps) => {
   return (
     <div>
       <div className="flex items-center gap-2">
@@ -27,7 +28,7 @@ const Post = ({ avatar, name, postTitle, id }: Props) => {
       </div>
       <div className="flex gap-4 cursor-pointer items-center">
         <Link href={`/post/${id}`}>
-          <p className="text-sm font-bold">Comments</p>
+          <p className="text-sm font-bold">{comments?.length}</p>
         </Link>
       </div>
     </div>

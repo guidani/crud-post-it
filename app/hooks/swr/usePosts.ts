@@ -1,3 +1,4 @@
+import { PostType } from "@/app/types/postType";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -7,7 +8,10 @@ const getAllPosts = async () => {
 };
 
 function usePosts() {
-  const { data, error, isLoading } = useSWR("/api/posts/getPosts", getAllPosts);
+  const { data, error, isLoading } = useSWR(
+    "/api/posts/getPosts",
+    getAllPosts
+  );
   return {
     posts: data,
     isLoading,
